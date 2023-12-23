@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  db:
+    container_name: postgresDB
+    image: postgres
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}      
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    #restart: always
+    ports:
+      - "7000:80"
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: adisia.mboka@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
+  api: 
+    container_name: node_app
+    build: .
+    image: kievo23/bamba:v1
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+volumes:
+  pgdata:
