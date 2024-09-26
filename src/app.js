@@ -15,13 +15,17 @@ const app = express();
 const router = express.Router();
 app.use('/', mpesaPurchaseRouter);
 
+//TESTS
+
 app.get("/to", async (req, res) => {
     try {
-        let result = await lipanampesa('254710345130','60','https://mydomain.com','254710345130');
+        let result = await lipanampesa('254710345130','60','https://bamba.ke','254710345130');
         console.log(result)
+        res.json(JSON.stringify(result))
     } catch (error) {
         console.log(error)
-    }    
+        res.json(JSON.stringify(error))
+    }
 })
 
 app.get("/sendcredit", async (req, res) => {

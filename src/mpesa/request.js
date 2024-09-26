@@ -4,7 +4,7 @@ import getAccessToken from './oauth.js'
 const request = async function (_baseURL = null) {
     const credentials = await getAccessToken()
     const instance = axios.create({
-      baseURL: _baseURL || process.env.MPESA_URL,
+      baseURL: process.env.MPESA_BASEURL,
       timeout: 5000,
       headers: {
         'Authorization': 'Bearer ' + credentials.data['access_token'],

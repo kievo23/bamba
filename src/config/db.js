@@ -1,8 +1,14 @@
+import 'dotenv/config'
 import express from 'express'
 import { Sequelize } from 'sequelize';
 
+console.log("DB: "+process.env.POSTGRES_DATABASE)
+console.log("USERNAME: "+process.env.POSTGRES_USERNAME)
+console.log("Password: "+process.env.POSTGRES_PASSWORD)
+
 const connection = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USERNAME, process.env.POSTGRES_PASSWORD, {
-    host: '0.0.0.0',
+    host: process.env.POSTGRES_HOST || 'db',
+    //host: 'db',
     dialect: 'postgres',
     port: '5432',
   });

@@ -16,7 +16,7 @@ import request from './request.js'
  */
 
 const lipanampesa = async function (senderMsisdn, amount, callbackUrl, accountRef, transactionDesc = 'Lipa na mpesa online', transactionType = 'CustomerPayBillOnline', shortCode = null, passKey = null) {
-    const _shortCode = shortCode || process.env.lipaNaMpesaShortCode
+    const _shortCode = process.env.MPESA_SHORTCODE
     const _passKey = passKey || process.env.lipaNaMpesaShortPass
     const timeStamp = (new Date()).toISOString().replace(/[^0-9]/g, '').slice(0, -3)
     const password = Buffer.from(`${_shortCode}${_passKey}${timeStamp}`).toString('base64')
