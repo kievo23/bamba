@@ -8,6 +8,8 @@ import getAccessToken from './mpesa/oauth.js'
 import mpesaPurchaseRouter from './routes/mpesaPurchaseRouter.js'
 import sendAirtime from "./controllers/Africastalking.js"
 import Africastalking from "africastalking";
+import { generateApiKey } from "generate-api-key";
+import apiKey from './middlewares/apikey.js'
 
 const PORT = process.env.PORT;
 const app = express();
@@ -33,6 +35,11 @@ app.get("/sendcredit", async (req, res) => {
     console.log(result.data)
     res.json(JSON.stringify(result.data));
 });
+
+app.get("/apikey", apiKey, (req, res) => {
+    let apiKey = generateApiKey({method: 'string', length: 20});
+    res.json(apiKey);
+})
 
 
 app.listen(PORT, () => {
