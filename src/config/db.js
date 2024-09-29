@@ -25,4 +25,5 @@ connection.sync({
   //force:true
 });
 
+
 export default connection;
