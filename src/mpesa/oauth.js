@@ -14,9 +14,9 @@ const getAccessToken = function(mpesa_baseURL = null)  {
       Authorization: `Basic ${auth}`
     }
   };
-  console.log("authorization")
-  console.log(auth)
-  console.log(options)
+  //console.log("authorization")
+  //console.log(auth)
+  //console.log(options)
   return axios.request(options);
 }
 
