@@ -6,9 +6,7 @@ import sendAirtime from "./Africastalking.js"
 
 
 const insertPurchase = async(req, res) => {
-  const jane = await MpesaPurchase.create({ phone_no: "Joan Wanjiku", purchasing_phone: "0710321234", status: 1, amount: "560" });
-  console.log(jane.phone_no);
-  res.json("db insertion")
+  res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa")
 }
 
 const seePurchase = (req, res) => {
