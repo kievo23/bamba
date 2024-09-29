@@ -51,6 +51,7 @@ const stkReturn = async(req, res) => {
 
   const mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Body.stkCallback.MerchantRequestID,
+    airtime_status: 0
   } });
   //mpesa.purchasing_phone = req.body.Body.stkCallback.CallbackMetadata.Item[3].Value;
   if(mpesa){
@@ -60,13 +61,14 @@ const stkReturn = async(req, res) => {
     mpesa.mpesa_result_desc = req.body.Body.stkCallback.ResultDesc;
     mpesa.status = 1;
     mpesa.mpesa_payload = JSON.stringify(req.body);
-    //mpesa.save();
+    mpesa.save();
 
     let result = await sendAirtime(mpesa.phone_no,mpesa.transaction_amount);
     console.log(result.data)
     if(result.data.errorMessage === "None"){
       mpesa.airtime_amount = result.data.responses[0].amount,
       mpesa.airtime_discount = result.data.responses[0].discount,
+      mpesa.airtime_payload = JSON.stringify(result.data);
       mpesa.airtime_status = 1
       mpesa.save();
     }
