@@ -4,15 +4,6 @@ import { Customers } from '../models/Customers.js'
 import lipanampesa from '../mpesa/lipa_na_mpesa_online.js';
 import sendAirtime from "./Africastalking.js"
 
-
-const insertPurchase = async(req, res) => {
-  res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa")
-}
-
-const seePurchase = (req, res) => {
-  res.json("see purchase")
-}
-
 const stkPush = async(req, res) => {
   console.log(req.body);
   //254710345130
@@ -76,8 +67,6 @@ const stkReturn = async(req, res) => {
 }
 
 export {
-    insertPurchase,
-    seePurchase,
     stkPush,
     stkReturn
 }
