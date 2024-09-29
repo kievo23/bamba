@@ -25,6 +25,7 @@ const Customers = connection.define('customers',{
   }
 );
 
+
 //User.belongsTo(Company, {foreignKey: 'fk_company'});
 
 
