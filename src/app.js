@@ -64,7 +64,7 @@ app.get("/to", async (req, res) => {
 
 // Middleware to parse application/json
 app.use(bodyParser.json());
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use('/api', mpesaPurchaseRouter);
 
