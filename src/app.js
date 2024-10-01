@@ -25,7 +25,7 @@ const safaricomOrigin = process.env.SAFARICOM_RETURN_URL;
 const corsOptions = {
   origin: (origin, callback) => {
     //console.log(origin);
-    if ([bambaOrigin,safaricomOrigin,"http://localhost:8000"].includes(origin)) {
+    if ([bambaOrigin,safaricomOrigin,"http://localhost:5173"].includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
