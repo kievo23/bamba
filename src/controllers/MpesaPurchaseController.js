@@ -66,6 +66,7 @@ const stkReturn = async(req, res) => {
   res.send(mpesa);
 }
 
+
 export {
     stkPush,
     stkReturn
