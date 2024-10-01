@@ -19,13 +19,13 @@ const app = express();
 const router = express.Router();
 
 const bambaOrigin = process.env.FRONT_END_URL;
-const safaricomOrigin = process.env.SAFARICOM_RETURN_URL;
+const mpesaOrigin = process.env.MPESA_BASEURL;
 
 // Create a CORS options object
 const corsOptions = {
   origin: (origin, callback) => {
     //console.log(origin);
-    if ([bambaOrigin,safaricomOrigin,"http://localhost:5173"].includes(origin)) {
+    if ([bambaOrigin,mpesaOrigin,"http://localhost:5173"].includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
