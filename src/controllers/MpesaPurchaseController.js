@@ -3,6 +3,7 @@ import { MpesaPurchase } from '../models/Purchase.js'
 import { Customers } from '../models/Customers.js'
 import lipanampesa from '../mpesa/lipa_na_mpesa_online.js';
 import sendAirtime from "./Africastalking.js"
+import { generateApiKey } from "generate-api-key";
 
 const stkPush = async(req, res) => {
   console.log(req.body);
@@ -12,15 +13,17 @@ const stkPush = async(req, res) => {
   phone = "254"+phone;
   mpesaphone = "254"+mpesaphone;
   let amount = req.body.amount;
+  let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
   try {
-      let result = await lipanampesa(phone,amount,process.env.SAFARICOM_RETURN_URL,req.body.ref);
+      let result = await lipanampesa(phone,amount,process.env.SAFARICOM_RETURN_URL+"/"+uuid,req.body.ref);
       
       res.json(JSON.stringify(result.data))
       let stkReq = await MpesaPurchase.create({
         merchant_request_i_d : result.data.MerchantRequestID,
         purchasing_phone : mpesaphone,
         phone_no : phone,
-        transaction_amount : amount
+        transaction_amount : amount,
+        transaction_uuid: uuid
       });
       console.log(stkReq.merchant_request_i_d )
       
@@ -31,17 +34,12 @@ const stkPush = async(req, res) => {
 }
 
 const stkReturn = async(req, res) => {
-  // req.body.Body.stkCallback.MerchantRequestID
-  // req.body.Body.stkCallback.ResultDesc
-  // req.body.Body.stkCallback.CallbackMetadata.Item[0].Value //amount
-  // req.body.Body.stkCallback.CallbackMetadata.Item[1].Value //MpesaReceiptNumber
-  // req.body.Body.stkCallback.CallbackMetadata.Item[2].Value //TransactionDate
-  // req.body.Body.stkCallback.CallbackMetadata.Item[3].Value //PhoneNumber
-
   const mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Body.stkCallback.MerchantRequestID,
-    airtime_status: 0
+    airtime_status: 0,
+    transaction_uuid : req.params.uuid
   } });
+
   //mpesa.purchasing_phone = req.body.Body.stkCallback.CallbackMetadata.Item[3].Value;
   if(mpesa){
     console.log(req.body.Body.stkCallback.CallbackMetadata.Item[1].Value)

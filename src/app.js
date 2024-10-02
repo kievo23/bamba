@@ -10,29 +10,12 @@ import sendAirtime from "./controllers/Africastalking.js"
 import Africastalking from "africastalking";
 import { generateApiKey } from "generate-api-key";
 import apiKey from './middlewares/apikey.js'
-import cors from 'cors';
 import bodyParser from 'body-parser';
 
 const PORT = process.env.PORT;
 const app = express();
 
 const router = express.Router();
-
-const bambaOrigin = process.env.FRONT_END_URL;
-const mpesaOrigin = process.env.MPESA_BASEURL;
-
-// Create a CORS options object
-const corsOptions = {
-  origin: (origin, callback) => {
-    //console.log(origin);
-    if ([bambaOrigin,mpesaOrigin,"http://localhost:5173"].includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  optionsSuccessStatus: 200
-};
 
 //TESTS
 
@@ -64,7 +47,7 @@ app.get("/to", async (req, res) => {
 
 // Middleware to parse application/json
 app.use(bodyParser.json());
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
 app.use('/api', mpesaPurchaseRouter);
 
