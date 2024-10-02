@@ -36,7 +36,7 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
         type: Sequelize.STRING,
         allowNull: true,
     },
-    transaction_uuid : {
+    transaction_ref : {
         type: Sequelize.STRING,
         allowNull: true,
     },
