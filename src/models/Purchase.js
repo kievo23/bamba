@@ -85,6 +85,14 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
     createdAt: { type: Sequelize.DATE, field: 'created_at' },
     updatedAt: { type: Sequelize.DATE, field: 'updated_at' }
   },{
+    indexes: [
+        { fields: ['phone_no'] },
+        { fields: ['transaction_uuid'] },
+        { fields: ['transaction_reference'] },
+        { fields: ['merchant_request_i_d'] },
+        { fields: ['createdAt'] },
+        { fields: ['transaction_uuid', 'merchant_request_i_d'] }
+      ],
     timestamps: true, // timestamps will now be true
     underscored: true
   }
