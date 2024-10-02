@@ -100,5 +100,4 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
 
 //User.belongsTo(Company, {foreignKey: 'fk_company'});
 
-
 export { MpesaPurchase }
