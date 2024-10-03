@@ -11,6 +11,7 @@ const stkPush = async(req, res) => {
   let phone = req.body.phone.replace(/\s+/g, '').slice(-9);
   let mpesaphone = req.body.mpesaphone.replace(/\s+/g, '').slice(-9);
   phone = "254"+phone;
+  
   mpesaphone = "254"+mpesaphone;
   let amount = req.body.amount;
   let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
