@@ -23,11 +23,11 @@ app.get("/", (req, res) => {
   res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa. /sendcredit, /apikey, /to");
 })
 
-app.get("/sendcredit", async (req, res) => {
-  let result = await sendAirtime("+254710345130","5");
-  console.log(result.data)
-  res.json(JSON.stringify(result.data));
-});
+// app.get("/sendcredit", async (req, res) => {
+//   let result = await sendAirtime("+254710345130","5");
+//   console.log(result.data)
+//   res.json(JSON.stringify(result.data));
+// });
 
 app.get("/apikey", apiKey, (req, res) => {
   let apiKey = generateApiKey({method: 'string', length: 20});
