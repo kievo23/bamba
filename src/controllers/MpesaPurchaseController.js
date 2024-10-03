@@ -15,7 +15,7 @@ const stkPush = async(req, res) => {
   let amount = req.body.amount;
   let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
   try {
-      let result = await lipanampesa(phone,amount,process.env.SAFARICOM_RETURN_URL+"/"+uuid,req.body.ref);
+      let result = await lipanampesa(mpesaphone,amount,process.env.SAFARICOM_RETURN_URL+"/"+uuid,req.body.ref);
       
       res.json(JSON.stringify(result.data))
       let stkReq = await MpesaPurchase.create({
@@ -34,7 +34,6 @@ const stkPush = async(req, res) => {
 }
 
 const stkReturn = async(req, res) => {
-  console.log(req.body)
   const mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Body.stkCallback.MerchantRequestID,
     airtime_status: 0,
