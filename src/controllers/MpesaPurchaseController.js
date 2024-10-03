@@ -34,6 +34,7 @@ const stkPush = async(req, res) => {
 }
 
 const stkReturn = async(req, res) => {
+  console.log(req.body)
   const mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Body.stkCallback.MerchantRequestID,
     airtime_status: 0,
@@ -42,7 +43,7 @@ const stkReturn = async(req, res) => {
 
   //mpesa.purchasing_phone = req.body.Body.stkCallback.CallbackMetadata.Item[3].Value;
   if(mpesa){
-    console.log(req.body.Body.stkCallback.CallbackMetadata.Item[1].Value)
+    console.log(req.body.Body.stkCallback.CallbackMetadata.Item)
     mpesa.transaction_reference = req.body.Body.stkCallback.CallbackMetadata.Item[1].Value;
     mpesa.transaction_amount = req.body.Body.stkCallback.CallbackMetadata.Item[0].Value;
     mpesa.mpesa_result_desc = req.body.Body.stkCallback.ResultDesc;
