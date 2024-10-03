@@ -5,6 +5,7 @@ import cors from 'cors';
 
 const bambaOrigin = process.env.FRONT_END_URL;
 const mpesaOrigin = process.env.MPESA_BASEURL;
+const confirmURL = process.env.ConfirmationMpesaURL;
 
 // Create a CORS options object
 const corsOptions = {
@@ -20,6 +21,8 @@ const corsOptions = {
   };
 
 router.route('/stkreturn/:uuid').post(MpesaPurchaseContoller.stkReturn)
+router.route('/registerurls').get(MpesaPurchaseContoller.registerUrl)
+router.route('/bambaconfirmationmpesa2020').post(MpesaPurchaseContoller.c2breturn)
 
 router.route('/stkpush')
 .options(cors(corsOptions))

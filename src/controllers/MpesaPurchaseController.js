@@ -4,6 +4,7 @@ import { Customers } from '../models/Customers.js'
 import lipanampesa from '../mpesa/lipa_na_mpesa_online.js';
 import sendAirtime from "./Africastalking.js"
 import { generateApiKey } from "generate-api-key";
+import c2bregister from "../mpesa/c2b_register.js"
 
 const stkPush = async(req, res) => {
   console.log(req.body);
@@ -45,6 +46,7 @@ const stkReturn = async(req, res) => {
     console.log(req.body.Body.stkCallback.CallbackMetadata.Item)
     mpesa.transaction_reference = req.body.Body.stkCallback.CallbackMetadata.Item[1].Value;
     mpesa.transaction_amount = req.body.Body.stkCallback.CallbackMetadata.Item[0].Value;
+    mpesa.transaction_type = "STK_PUSH";
     mpesa.mpesa_result_desc = req.body.Body.stkCallback.ResultDesc;
     mpesa.status = 1;
     mpesa.mpesa_payload = JSON.stringify(req.body);
@@ -64,8 +66,26 @@ const stkReturn = async(req, res) => {
   res.send(mpesa);
 }
 
+const c2breturn = async (req, res) => {
+  let transaction = await MpesaPurchase.create({ 
+    transaction_type : "PAYBILL",
+    // transaction_amount : res.body.TransAmount,
+    // transaction_reference : res.body.TransID,
+    // transaction_time : res.body.TransTime,
+    mpesa_payload : JSON.stringify(req.body)
+  });
+}
+
+const registerUrl = async(req, res) => {
+  let confirmURL = process.env.ConfirmationMpesaURL;
+  let validateURL = process.env.ValidationMpesaURL;
+  let feedback = await c2bregister(confirmURL,validateURL,"4107028")
+  console.log(feedback.data)
+}
 
 export {
     stkPush,
-    stkReturn
+    stkReturn,
+    c2breturn,
+    registerUrl
 }

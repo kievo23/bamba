@@ -11,12 +11,14 @@ import request from './request.js'
  * @param  {string} [responseType='Completed'] Default response type for timeout. Incase a tranaction times out, Mpesa will by default Complete or Cancel the transaction
  * @return {Promise}
  */
-module.exports = async function (confirmationUrl, validationUrl, shortCode = null, responseType = 'Completed') {
+const c2bregister = async function (confirmationUrl, validationUrl, shortCode = 4107028, responseType = 'Completed') {
     const req = await request()
     return req.post('/mpesa/c2b/v1/registerurl', {
-      'ShortCode': shortCode || this.configs.shortCode,
+      'ShortCode': shortCode,
       'ResponseType': responseType,
-      'ConfirmationURL': confirmationUrl,
-      'ValidationURL': validationUrl
+      'ConfirmationURL': "https://api.bamba.ke/api"+confirmationUrl,
+      'ValidationURL': "https://api.bamba.ke/api"+validationUrl
     })
   }
+
+export default c2bregister
