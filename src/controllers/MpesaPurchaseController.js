@@ -4,7 +4,7 @@ import { Customers } from '../models/Customers.js'
 import lipanampesa from '../mpesa4107028/lipa_na_mpesa_online.js';
 import sendAirtime from "./Africastalking.js"
 import { generateApiKey } from "generate-api-key";
-import c2bregister from "../mpesa4107028/c2b_register.js"
+import c2bregister from "../mpesa001500/c2b_register.js"
 
 const stkPush = async(req, res, next) => {
   console.log(req.body);
