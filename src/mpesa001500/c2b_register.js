@@ -11,7 +11,7 @@ import request from './request.js'
  * @param  {string} [responseType='Completed'] Default response type for timeout. Incase a tranaction times out, Mpesa will by default Complete or Cancel the transaction
  * @return {Promise}
  */
-const c2bregister = async function (confirmationUrl, validationUrl, shortCode = 4107028, responseType = 'Completed') {
+const c2bregister = async function (confirmationUrl, validationUrl, shortCode = '001500', responseType = 'Completed') {
     const req = await request()
     return req.post('/mpesa/c2b/v2/registerurl', {
       'ShortCode': shortCode,
