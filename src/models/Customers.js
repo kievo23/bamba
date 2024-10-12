@@ -12,7 +12,16 @@ const Customers = connection.define('customers',{
         type: Sequelize.STRING,
         allowNull: false,
     },
-    count: {
+    offer_count: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    recount_after_offer: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    }, 
+    purchase_count: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0

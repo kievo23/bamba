@@ -1,12 +1,12 @@
 const data = {}
 import { MpesaPurchase } from '../models/Purchase.js'
 import { Customers } from '../models/Customers.js'
-import lipanampesa from '../mpesa/lipa_na_mpesa_online.js';
+import lipanampesa from '../mpesa4107028/lipa_na_mpesa_online.js';
 import sendAirtime from "./Africastalking.js"
 import { generateApiKey } from "generate-api-key";
-import c2bregister from "../mpesa/c2b_register.js"
+import c2bregister from "../mpesa4107028/c2b_register.js"
 
-const stkPush = async(req, res) => {
+const stkPush = async(req, res, next) => {
   console.log(req.body);
   //254710345130
   let phone = req.body.phone.replace(/\s+/g, '').slice(-9);
@@ -18,7 +18,6 @@ const stkPush = async(req, res) => {
   try {
       let result = await lipanampesa(mpesaphone,amount,process.env.SAFARICOM_RETURN_URL+"/"+uuid,req.body.ref);
       
-      res.json(JSON.stringify(result.data))
       let stkReq = await MpesaPurchase.create({
         merchant_request_i_d : result.data.MerchantRequestID,
         purchasing_phone : mpesaphone,
@@ -26,12 +25,22 @@ const stkPush = async(req, res) => {
         transaction_amount : amount,
         transaction_uuid: uuid
       });
-      console.log(stkReq.merchant_request_i_d )
-      
+      console.log(result.data );
+      res.json(result.data)
   } catch (error) {
       console.log(error)
-      res.json(JSON.stringify(error))
+      res.json(error)
   }
+}
+
+const stkPushStatus = async(req, res) => {
+  console.log(req.body);
+  const mpesa = await MpesaPurchase.findOne({ 
+    attributes: ['merchant_request_i_d','status','airtime_status'],
+    where: { 
+      merchant_request_i_d: req.body.merchant_request_i_d
+  } });
+  res.json(mpesa);
 }
 
 const stkReturn = async(req, res) => {
@@ -63,7 +72,7 @@ const stkReturn = async(req, res) => {
     }
   }
 
-  res.send(mpesa);
+  res.json(mpesa);
 }
 
 const c2breturn = async (req, res) => {
@@ -87,5 +96,6 @@ export {
     stkPush,
     stkReturn,
     c2breturn,
-    registerUrl
+    registerUrl,
+    stkPushStatus
 }
