@@ -83,6 +83,11 @@ const c2breturn = async (req, res) => {
     // transaction_time : res.body.TransTime,
     mpesa_payload : JSON.stringify(req.body)
   });
+  console.log(transaction)
+  res.json({
+    "ResultCode": 0,
+    "ResultDesc" : "success"
+  })
 }
 
 const registerUrl = async(req, res) => {
