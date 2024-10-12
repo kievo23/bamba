@@ -102,7 +102,7 @@ const registerUrl4107028 = async(req, res) => {
 const registerUrl001500 = async(req, res) => {
   let confirmURL = process.env.ConfirmationMpesaURL;
   let validateURL = process.env.ValidationMpesaURL;
-  let feedback = await c2bregister001500(confirmURL,validateURL,"4107028")
+  let feedback = await c2bregister001500(confirmURL,validateURL,"001500")
   console.log(feedback.data)
   res.json(feedback.data);
 }
