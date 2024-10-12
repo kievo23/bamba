@@ -7,7 +7,7 @@ import cors from 'cors';
 
 router.route('/stkreturn/:uuid').post(MpesaPurchaseContoller.stkReturn)
 router.route('/registerurls').get(MpesaPurchaseContoller.registerUrl)
-router.route('/bambaconfirmationmpesa2020').post(MpesaPurchaseContoller.c2breturn)
+router.route('/bambac2bconfirmationsocks').post(MpesaPurchaseContoller.c2breturn)
 router.route('/stkpush').post(apiKey,MpesaPurchaseContoller.stkPush)
 router.route('/stkpushstatus').post(apiKey,MpesaPurchaseContoller.stkPushStatus)
 
