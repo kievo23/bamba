@@ -13,7 +13,7 @@ import request from './request.js'
  */
 const c2bregister = async function (confirmationUrl, validationUrl, shortCode = 4107028, responseType = 'Completed') {
     const req = await request()
-    return req.post('/mpesa/c2b/v1/registerurl', {
+    return req.post('/mpesa/c2b/v2/registerurl', {
       'ShortCode': shortCode,
       'ResponseType': responseType,
       'ConfirmationURL': "https://api.bamba.ke/api"+confirmationUrl,
