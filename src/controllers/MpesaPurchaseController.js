@@ -4,7 +4,8 @@ import { Customers } from '../models/Customers.js'
 import lipanampesa from '../mpesa4107028/lipa_na_mpesa_online.js';
 import sendAirtime from "./Africastalking.js"
 import { generateApiKey } from "generate-api-key";
-import c2bregister from "../mpesa001500/c2b_register.js"
+import c2bregister001500 from "../mpesa001500/c2b_register.js"
+import c2bregister4107028 from "../mpesa4107028/c2b_register.js"
 
 const stkPush = async(req, res, next) => {
   console.log(req.body);
@@ -90,10 +91,18 @@ const c2breturn = async (req, res) => {
   })
 }
 
-const registerUrl = async(req, res) => {
+const registerUrl4107028 = async(req, res) => {
   let confirmURL = process.env.ConfirmationMpesaURL;
   let validateURL = process.env.ValidationMpesaURL;
-  let feedback = await c2bregister(confirmURL,validateURL,"4107028")
+  let feedback = await c2bregister4107028(confirmURL,validateURL,"4107028")
+  console.log(feedback.data)
+  res.json(feedback.data);
+}
+
+const registerUrl001500 = async(req, res) => {
+  let confirmURL = process.env.ConfirmationMpesaURL;
+  let validateURL = process.env.ValidationMpesaURL;
+  let feedback = await c2bregister001500(confirmURL,validateURL,"4107028")
   console.log(feedback.data)
   res.json(feedback.data);
 }
@@ -102,6 +111,7 @@ export {
     stkPush,
     stkReturn,
     c2breturn,
-    registerUrl,
+    registerUrl4107028,
+    registerUrl001500,
     stkPushStatus
 }
