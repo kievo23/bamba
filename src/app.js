@@ -34,7 +34,7 @@ const corsOptions = {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", cors(corsOptions), (req, res, next) => {
+app.get("/", (req, res, next) => {
   res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa. /sendcredit, /apikey, /to");
 })
 
