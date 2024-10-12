@@ -90,6 +90,7 @@ const registerUrl = async(req, res) => {
   let validateURL = process.env.ValidationMpesaURL;
   let feedback = await c2bregister(confirmURL,validateURL,"4107028")
   console.log(feedback.data)
+  res.json(feedback.data);
 }
 
 export {

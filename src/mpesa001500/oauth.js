@@ -1,8 +1,8 @@
 import axios from "axios";
 let res;
 
-const consumer_secret = process.env.MPESA_CONSUMER_SECRET;
-const consumer_key = process.env.MPESA_CONSUMER_KEY;
+const consumer_secret = process.env.MPESA_CONSUMER_SECRET_001500;
+const consumer_key = process.env.MPESA_CONSUMER_KEY_001500;
 
 const getAccessToken = function(mpesa_baseURL = null)  {
   const auth = Buffer.from(consumer_key + ':' + consumer_secret).toString('base64');
