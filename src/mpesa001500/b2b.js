@@ -18,11 +18,11 @@ import request from './request.js'
  * @param  {String}  [remarks='B2B Request']                  Comments that are sent along with the transaction.
  * @return {Promise}
  */
-module.exports = async function (senderParty, receiverParty, amount, queueUrl, resultUrl, senderType = 4, receiverType = 4, initiator = null, commandId = 'BusinessToBusinessTransfer', accountRef = null, remarks = 'B2B Request') {
+const b2b = async function (senderParty, receiverParty, amount, queueUrl, resultUrl, senderType = 4, receiverType = 4, initiator = null, commandId = 'BusinessPayBill', accountRef = null, remarks = 'B2B Request') {
     const req = await request()
-    const securityCredential = this.security()
+    const securityCredential = process.env.MPESA_SECURITY_CREDENTIAL_001500
     return req.post('/mpesa/b2b/v1/paymentrequest', {
-      'Initiator': initiator || this.configs.initiatorName,
+      'Initiator': initiator || process.env.MPESA_INITIATOR_001500,
       'SecurityCredential': securityCredential,
       'CommandID': commandId,
       'SenderIdentifierType': senderType,
@@ -36,3 +36,5 @@ module.exports = async function (senderParty, receiverParty, amount, queueUrl, r
       'ResultURL': resultUrl
     })
   }
+
+  export default b2b

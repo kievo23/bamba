@@ -9,6 +9,7 @@ import * as MpesaPurchaseContoller from "./controllers/MpesaPurchaseController.j
 import testsRouter from './routes/testsRouter.js'
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import cron from "node-cron"
 
 const PORT = process.env.PORT;
 const app = express();
@@ -43,4 +44,8 @@ app.use('/test', testsRouter);
 
 app.listen(PORT, () => {
     console.log(`App running on hazel ${PORT}`);
-})
+});
+
+// cron.schedule('* * * * * *', () => {
+//   console.log('running every minute 1, 2, 4 and 5');
+// });

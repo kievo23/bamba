@@ -2,31 +2,49 @@ import Sequelize from "sequelize";
 import connection from '../config/db.js';
 
 
-const Customer = connection.define('customers',{
+const B2bTransfer = connection.define('b2bTransfer',{
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    phone_no: {
+    conversational_id: {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    offer_count: {
+    partyA: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
+    partyB: {
       type: Sequelize.STRING,
       allowNull: true,
-      defaultValue: 0
     },
-    recount_after_offer: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      defaultValue: 0
+    amount: {
+      type: Sequelize.STRING,
+      allowNull: true,
     }, 
-    purchase_count: {
+    status: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
-    },    
+    }, 
+    transaction_reference: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    }, 
+    result_desc: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
+    payload: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
+    uuid: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
     createdAt: { type: Sequelize.DATE, field: 'created_at' },
     updatedAt: { type: Sequelize.DATE, field: 'updated_at' }
   },{
@@ -39,4 +57,4 @@ const Customer = connection.define('customers',{
 //User.belongsTo(Company, {foreignKey: 'fk_company'});
 
 
-export { Customer }
+export { B2bTransfer }

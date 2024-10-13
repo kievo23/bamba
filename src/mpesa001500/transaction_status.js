@@ -16,11 +16,11 @@ import request from './request.js'
  * @param  {String} [commandId='TransactionStatusQuery'] Takes only 'TransactionStatusQuery' command id
  * @return {Promise}
  */
-module.exports = async function (transactionId, receiverParty, idType, queueUrl, resultUrl, remarks = 'TransactionReversal', occasion = 'TransactionReversal', initiator = null, commandId = 'TransactionStatusQuery') {
-    const securityCredential = process.env.MPESA_SECURITY_CREDENTIAL
+const transactionStatus= async function (transactionId, receiverParty, idType, queueUrl, resultUrl, remarks = 'TransactionReversal', occasion = 'TransactionReversal', initiator = null, commandId = 'TransactionStatusQuery') {
+    const securityCredential = process.env.MPESA_SECURITY_CREDENTIAL_001500
     const req = await request()
     return req.post('/mpesa/transactionstatus/v1/query', {
-      'Initiator': initiator || this.configs.initiatorName,
+      'Initiator': initiator,
       'SecurityCredential': securityCredential,
       'CommandID': commandId,
       'TransactionID': transactionId,
@@ -32,3 +32,5 @@ module.exports = async function (transactionId, receiverParty, idType, queueUrl,
       'Occasion': occasion
     })
   }
+
+  export default transactionStatus

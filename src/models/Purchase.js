@@ -29,7 +29,7 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
         allowNull: true,
     },
     transaction_time : {
-        type: Sequelize.TIME,
+        type: Sequelize.STRING,
         allowNull: true,
     },
     transaction_type : {
@@ -43,6 +43,7 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
     transaction_reference: {
         type: Sequelize.STRING,
         allowNull: true,
+        unique: true
     },
     airtime_payload: {
         type: Sequelize.TEXT,
