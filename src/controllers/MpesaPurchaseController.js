@@ -172,10 +172,11 @@ const c2bConfirmation = async(req, res) => {
   //console.log(mpesa)
   if(mpesa){
     //SEND AIRTIME
-    SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
+    let feedback = await SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
     res.json({
       "ResultCode": 0,
-      "ResultDesc" : "Transaction Authenticated"
+      "ResultDesc" : "Transaction Authenticated",
+      "feedback" : feedback.data
     })
   }else{
     res.json({
@@ -235,9 +236,14 @@ const SendAirtime = async(phone,amount,mpesa) => {
     mpesa.airtime_amount = result.data.responses[0].amount,
     mpesa.airtime_discount = result.data.responses[0].discount,
     mpesa.airtime_payload = JSON.stringify(result.data);
-    mpesa.airtime_status = 1
+    mpesa.airtime_status = 1;
+    mpesa.status = 1
+    mpesa.save();
+  }else{
+    mpesa.status = 2;
     mpesa.save();
   }
+  return result
 }
 
 const registerUrl4107028 = async(req, res) => {
