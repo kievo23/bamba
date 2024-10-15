@@ -114,7 +114,7 @@ const c2breturn = async (req, res) => {
     transaction_amount : req.body.TransAmount,
     transaction_reference : req.body.TransID,
     transaction_time : req.body.TransTime,
-    phone_no : "254"+req.body.BillRefNumber,
+    phone_no : "254"+BillRefNumber,
     purchasing_phone : req.body.MSISDN,
     mpesa_payload : JSON.stringify(req.body)
   });
