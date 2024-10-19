@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import cron from "node-cron"
 import log from "./models/Logging.js";
+import fs from 'node:fs';
 
 const PORT = process.env.PORT;
 const app = express();
@@ -42,7 +43,13 @@ app.use('/test', testsRouter);
 
 app.listen(PORT, () => {
 
-  log("Keeping an eye on MPESA")
+  fs.writeFile(process.env.LOGGING_DIR, "Keeping an eye on MPESA", err => {
+    if (err) {
+      console.error(err);
+    } else {
+      // file written successfully
+    }
+  });
   console.log(`App running on hazel ${PORT}`);
 });
 
