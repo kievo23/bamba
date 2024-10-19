@@ -30,9 +30,9 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static('public'))
+app.use(cors());
 
 app.get("/", (req, res, next) => {
   res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa. /sendcredit, /apikey, /to");
