@@ -17,6 +17,7 @@ import log from '../models/Logging.js';
 
 const stkPush = async(req, res, next) => {
   console.log(req.body);
+  log(req.body);
   //254710345130
   let phone = req.body.phone.replace(/\s+/g, '').slice(-9);
   let mpesaphone = req.body.mpesaphone.replace(/\s+/g, '').slice(-9);
