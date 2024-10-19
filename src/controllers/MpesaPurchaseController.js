@@ -13,6 +13,7 @@ import b2b4107028 from "../mpesa4107028/b2b.js"
 import cron from "node-cron"
 
 import { where } from 'sequelize';
+import log from '../models/Logging.js';
 
 const stkPush = async(req, res, next) => {
   console.log(req.body);
@@ -42,7 +43,7 @@ const stkPush = async(req, res, next) => {
 }
 
 const stkPushStatus = async(req, res) => {
-  console.log(req.body);
+  log(req.body);
   const mpesa = await MpesaPurchase.findOne({ 
     attributes: ['merchant_request_i_d','status','airtime_status'],
     where: { 
@@ -52,6 +53,7 @@ const stkPushStatus = async(req, res) => {
 }
 
 const stkReturn = async(req, res) => {
+  log(req.body)
   const mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Body.stkCallback.MerchantRequestID,
     airtime_status: 0,
@@ -108,6 +110,7 @@ const c2breturn = async (req, res) => {
   //   "MSISDN": "a8312439df14de505d8a111dd575bb9cb211444e7878b0beb6afc78874d6af3e",
   //   "FirstName": "KELVIN"
   // }
+  log(req.body)
   let BillRefNumber = req.body.BillRefNumber.replace(/\s+/g, '').slice(-9);
   let transaction = await MpesaPurchase.create({ 
     transaction_type : "PAYBILL",
@@ -162,6 +165,7 @@ const c2breturn = async (req, res) => {
 }
 
 const c2bConfirmation = async(req, res) => {
+  log(req.body)
   console.log(req.body)
   const mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Result.OriginatorConversationID,
@@ -215,6 +219,7 @@ const b2bRequest = async(req,res) => {
 }
 
 const b2bReturn = async(req,res) => {
+  log(req.body)
   const b2btransfer = await B2bTransfer.findOne({ where: { 
     conversational_id : req.body.Result.OriginatorConversationID,
     uuid : req.params.uuid
@@ -231,7 +236,7 @@ const b2bReturn = async(req,res) => {
 const SendAirtime = async(phone,amount,mpesa) => {
   amount = Math.floor(amount);
   let result = await sendAirtime(phone,amount);
-  //console.log(result.data)
+  log(result.data)
   if(result.data.errorMessage === "None"){
     mpesa.airtime_amount = result.data.responses[0].amount,
     mpesa.airtime_discount = result.data.responses[0].discount,
