@@ -211,7 +211,7 @@ const c2breturn = async (req, res) => {
 
 const c2bConfirmation = async(req, res) => {
   log(req.body)
-  console.log(req.body)
+  console.log(JSON.stringify(req.body))
   if(req.body.Result.ResultCode == "0"){
     const mpesa = await MpesaPurchase.findOne({ where: { 
       merchant_request_i_d: req.body.Result.OriginatorConversationID,
