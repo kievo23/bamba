@@ -207,27 +207,35 @@ const c2breturn = async (req, res) => {
 const c2bConfirmation = async(req, res) => {
   log(req.body)
   console.log(req.body)
-  const mpesa = await MpesaPurchase.findOne({ where: { 
-    merchant_request_i_d: req.body.Result.OriginatorConversationID,
-    airtime_status: 0,
-    transaction_uuid : req.params.uuid,
-    transaction_reference : req.body.Result.ResultParameters.ResultParameter[12].Value
-  } });
-  //console.log(mpesa)
-  if(mpesa){
-    //SEND AIRTIME
-    let feedback = await SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
-    res.json({
-      "ResultCode": 0,
-      "ResultDesc" : "Transaction Authenticated",
-      "feedback" : feedback.data
-    })
+  if(req.body.Result.ResultCode == "0"){
+    const mpesa = await MpesaPurchase.findOne({ where: { 
+      merchant_request_i_d: req.body.Result.OriginatorConversationID,
+      airtime_status: 0,
+      transaction_uuid : req.params.uuid,
+      transaction_reference : req.body.Result.ResultParameters.ResultParameter[12].Value
+    } });
+    //console.log(mpesa)
+    if(mpesa){
+      //SEND AIRTIME
+      let feedback = await SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
+      res.json({
+        "ResultCode": 0,
+        "ResultDesc" : "Transaction Authenticated",
+        "feedback" : feedback.data
+      })
+    }else{
+      res.json({
+        "ResultCode": 1,
+        "ResultDesc" : "Transaction not found"
+      })
+    }
   }else{
     res.json({
-      "ResultCode": 1,
-      "ResultDesc" : "Transaction not found"
+      "ResultCode": 2,
+      "ResultDesc" : "Not a successful transaction status"
     })
   }
+  
 }
 
 const b2bRequest = async(req,res) => {
