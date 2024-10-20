@@ -18,17 +18,17 @@ const mpesaOrigin = process.env.MPESA_BASEURL;
 const confirmURL = process.env.ConfirmationMpesaURL;
 
 // Create a CORS options object
-// const corsOptions = {
-//   origin: (origin, callback) => {
-//     console.log(origin);
-//     if ([bambaOrigin,mpesaOrigin].includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   optionsSuccessStatus: 200
-// };
+const corsOptions = {
+  origin: (origin, callback) => {
+    console.log(origin);
+    if ([bambaOrigin,mpesaOrigin].includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  optionsSuccessStatus: 200
+};
 
 app.use(bodyParser.json());
 app.use(express.static('public'))
