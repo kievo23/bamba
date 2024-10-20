@@ -201,6 +201,11 @@ const c2breturn = async (req, res) => {
       "ResultCode": 0,
       "ResultDesc" : "success"
     })
+  }else{
+    res.json({
+      "ResultCode": 1,
+      "ResultDesc" : "record already exists"
+    })
   }
 }
 
