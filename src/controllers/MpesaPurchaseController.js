@@ -8,6 +8,7 @@ import { generateApiKey } from "generate-api-key";
 import c2bregister001500 from "../mpesa001500/c2b_register.js"
 import c2bregister4107028 from "../mpesa4107028/c2b_register.js"
 import transaction_status001500 from "../mpesa001500/transaction_status.js"
+import transaction_status4107028 from "../mpesa4107028/transaction_status.js"
 import b2b001500 from "../mpesa001500/b2b.js"
 import b2b4107028 from "../mpesa4107028/b2b.js"
 import cron from "node-cron"
@@ -85,6 +86,7 @@ const stkReturn = async(req, res) => {
       mpesa.transaction_type = "STK_PUSH";
       mpesa.mpesa_payload = JSON.stringify(req.body);
     }
+    mpesa.business_short_code = "4107028",
     mpesa.transaction_reference = req.body.Body.stkCallback.CallbackMetadata.Item[1].Value;
     mpesa.transaction_amount = req.body.Body.stkCallback.CallbackMetadata.Item[0].Value;
     mpesa.transaction_time = req.body.Body.stkCallback.CallbackMetadata.Item[2].Value;
@@ -134,7 +136,7 @@ const c2breturn = async (req, res) => {
   const c2bMpesa = await MpesaPurchase.findOne({ where: { 
     transaction_reference : req.body.TransID
   }});
-  
+
   if(!c2bMpesa){
     let BillRefNumber = req.body.BillRefNumber.replace(/\s+/g, '').slice(-9);
     let transaction = await MpesaPurchase.create({ 
@@ -142,6 +144,7 @@ const c2breturn = async (req, res) => {
       transaction_amount : req.body.TransAmount,
       transaction_reference : req.body.TransID,
       transaction_time : req.body.TransTime,
+      business_short_code : req.body.BusinessShortCode,
       phone_no : "254"+BillRefNumber,
       purchasing_phone : req.body.MSISDN,
       mpesa_payload : JSON.stringify(req.body)
@@ -165,17 +168,28 @@ const c2breturn = async (req, res) => {
   
     //REQUEST CONFIRMATION
     let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
-    let confirmationRequest = await transaction_status001500(
-      req.body.TransID,  
-      "001500",
-      "4",
-      process.env.MPESA_TIMEOUT_URL,
-      process.env.MPESA_CONFIRMATION_RETURN_URL+"/"+uuid,
-      'A check of the transaction to make sure we are not robbed',
-      'Occasion',
-      process.env.MPESA_INITIATOR_001500,
-      "TransactionStatusQuery"
-    );
+    let confirmationRequest = transaction.business_short_code == "001500" ? 
+      await transaction_status001500(
+        req.body.TransID,  
+        "001500",
+        "4",
+        process.env.MPESA_TIMEOUT_URL,
+        process.env.MPESA_CONFIRMATION_RETURN_URL+"/"+uuid,
+        'A check of the transaction to make sure we are not robbed',
+        'Occasion',
+        process.env.MPESA_INITIATOR_001500,
+        "TransactionStatusQuery"
+      ) : await transaction_status4107028(
+        req.body.TransID,  
+        "4107028",
+        "4",
+        process.env.MPESA_TIMEOUT_URL,
+        process.env.MPESA_CONFIRMATION_RETURN_URL+"/"+uuid,
+        'A check of the transaction to make sure we are not robbed',
+        'Occasion',
+        process.env.MPESA_INITIATOR_4107028,
+        "TransactionStatusQuery"
+      ) 
   
     transaction.merchant_request_i_d = confirmationRequest.data.OriginatorConversationID;
     transaction.transaction_uuid = uuid;

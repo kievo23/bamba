@@ -49,13 +49,13 @@ app.use('/test', testsRouter);
 
 app.listen(PORT, '0.0.0.0', () => {
 
-  fs.writeFile(process.env.LOGGING_DIR, "Keeping an eye on MPESA", err => {
-    if (err) {
-      console.error(err);
-    } else {
-      // file written successfully
-    }
-  });
+  // fs.writeFile(process.env.LOGGING_DIR, "Keeping an eye on MPESA", err => {
+  //   if (err) {
+  //     console.error(err);
+  //   } else {
+  //     // file written successfully
+  //   }
+  // });
   console.log(`App running on hazel ${PORT}`);
 });
 

@@ -57,6 +57,10 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
         type: Sequelize.STRING,
         allowNull: true,
     },
+    business_short_code: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
     status:  {
         type: Sequelize.INTEGER,
         allowNull: false,
