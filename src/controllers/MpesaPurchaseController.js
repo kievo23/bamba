@@ -56,7 +56,7 @@ const stkPushStatus = async(req, res) => {
 const stkReturn = async(req, res) => {
   log(req.body)
   console.log(req.body);
-  const mpesa = await MpesaPurchase.findOne({ where: { 
+  let mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Body.stkCallback.MerchantRequestID,
     airtime_status: 0,
     transaction_uuid : req.params.uuid
