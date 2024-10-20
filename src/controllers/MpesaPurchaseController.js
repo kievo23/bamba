@@ -93,7 +93,6 @@ const stkReturn = async(req, res) => {
     //SEND AIRTIME
     SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
   }
-
   res.json(mpesa);
 }
 

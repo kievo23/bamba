@@ -34,11 +34,11 @@ app.use(bodyParser.json());
 app.use(express.static('public'))
 app.use(cors());
 
-app.use((req, res, next) => {
-  console.log('Request received:', req.method, req.path);
-  console.log('Request headers:', req.headers);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('Request received:', req.method, req.path);
+//   console.log('Request headers:', req.headers);
+//   next();
+// });
 
 app.get("/", (req, res, next) => {
   res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa. /sendcredit, /apikey, /to");
