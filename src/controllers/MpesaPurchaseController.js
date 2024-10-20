@@ -64,13 +64,32 @@ const stkReturn = async(req, res) => {
   //mpesa.purchasing_phone = req.body.Body.stkCallback.CallbackMetadata.Item[3].Value;
   if(mpesa){
     console.log(req.body.Body.stkCallback.CallbackMetadata.Item)
+    //check for an existing c2b before stkReturn
+    const c2bMpesa = await MpesaPurchase.findOne({ where: { 
+      transaction_reference : req.body.Body.stkCallback.CallbackMetadata.Item[1].Value
+    }});
+    if(c2bMpesa){
+      c2bMpesa.merchant_request_i_d = mpesa.merchant_request_i_d;
+      c2bMpesa.purchasing_phone = mpesa.purchasing_phone;
+      c2bMpesa.phone_no = mpesa.phone_no;
+      c2bMpesa.transaction_amount = mpesa.transaction_amount;
+      c2bMpesa.transaction_uuid = mpesa.transaction_uuid;
+      mpesa.merchant_request_i_d = "Overtaken By C2B";
+      mpesa.status = 2;
+      mpesa.mpesa_payload = JSON.stringify(req.body);
+      mpesa.save();
+      //Re-assign
+      mpesa = c2bMpesa;
+      mpesa.transaction_type = "STK_PUSH Highjacked by C2B";
+    }else{
+      mpesa.transaction_type = "STK_PUSH";
+      mpesa.mpesa_payload = JSON.stringify(req.body);
+    }
     mpesa.transaction_reference = req.body.Body.stkCallback.CallbackMetadata.Item[1].Value;
     mpesa.transaction_amount = req.body.Body.stkCallback.CallbackMetadata.Item[0].Value;
     mpesa.transaction_time = req.body.Body.stkCallback.CallbackMetadata.Item[2].Value;
-    mpesa.transaction_type = "STK_PUSH";
     mpesa.mpesa_result_desc = req.body.Body.stkCallback.ResultDesc;
     mpesa.status = 1;
-    mpesa.mpesa_payload = JSON.stringify(req.body);
     mpesa.save();
 
     //UPDATE USER
