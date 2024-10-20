@@ -168,7 +168,7 @@ const c2breturn = async (req, res) => {
   
     //REQUEST CONFIRMATION
     let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
-    let confirmationRequest = transaction.business_short_code == "001500" ? 
+    let confirmationRequest = (transaction.business_short_code == "001500") ? 
       await transaction_status001500(
         req.body.TransID,  
         "001500",
