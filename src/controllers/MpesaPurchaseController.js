@@ -131,57 +131,63 @@ const c2breturn = async (req, res) => {
   // }
   log(req.body)
   console.log(req.body);
-  let BillRefNumber = req.body.BillRefNumber.replace(/\s+/g, '').slice(-9);
-  let transaction = await MpesaPurchase.create({ 
-    transaction_type : "PAYBILL",
-    transaction_amount : req.body.TransAmount,
-    transaction_reference : req.body.TransID,
-    transaction_time : req.body.TransTime,
-    phone_no : "254"+BillRefNumber,
-    purchasing_phone : req.body.MSISDN,
-    mpesa_payload : JSON.stringify(req.body)
-  });
-
-  let user = await Customer.findOne({
-    where: {
-      phone_no : req.body.MSISDN,
-    }
-  });
-
-  if(user){
-    user.recount_after_offer = user.recount_after_offer + 1;
-    user.purchase_count = user.purchase_count + 1
-    user.save()
-  }else{
-    let rst = await Customer.create({
-      phone_no: req.body.MSISDN
+  const c2bMpesa = await MpesaPurchase.findOne({ where: { 
+    transaction_reference : req.body.TransID
+  }});
+  
+  if(!c2bMpesa){
+    let BillRefNumber = req.body.BillRefNumber.replace(/\s+/g, '').slice(-9);
+    let transaction = await MpesaPurchase.create({ 
+      transaction_type : "PAYBILL",
+      transaction_amount : req.body.TransAmount,
+      transaction_reference : req.body.TransID,
+      transaction_time : req.body.TransTime,
+      phone_no : "254"+BillRefNumber,
+      purchasing_phone : req.body.MSISDN,
+      mpesa_payload : JSON.stringify(req.body)
     });
+  
+    let user = await Customer.findOne({
+      where: {
+        phone_no : req.body.MSISDN,
+      }
+    });
+  
+    if(user){
+      user.recount_after_offer = user.recount_after_offer + 1;
+      user.purchase_count = user.purchase_count + 1
+      user.save()
+    }else{
+      let rst = await Customer.create({
+        phone_no: req.body.MSISDN
+      });
+    }
+  
+    //REQUEST CONFIRMATION
+    let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
+    let confirmationRequest = await transaction_status001500(
+      req.body.TransID,  
+      "001500",
+      "4",
+      process.env.MPESA_TIMEOUT_URL,
+      process.env.MPESA_CONFIRMATION_RETURN_URL+"/"+uuid,
+      'A check of the transaction to make sure we are not robbed',
+      'Occasion',
+      process.env.MPESA_INITIATOR_001500,
+      "TransactionStatusQuery"
+    );
+  
+    transaction.merchant_request_i_d = confirmationRequest.data.OriginatorConversationID;
+    transaction.transaction_uuid = uuid;
+    transaction.save();
+    console.log(confirmationRequest.data);
+  
+    //console.log(transaction)
+    res.json({
+      "ResultCode": 0,
+      "ResultDesc" : "success"
+    })
   }
-
-  //REQUEST CONFIRMATION
-  let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
-  let confirmationRequest = await transaction_status001500(
-    req.body.TransID,  
-    "001500",
-    "4",
-    process.env.MPESA_TIMEOUT_URL,
-    process.env.MPESA_CONFIRMATION_RETURN_URL+"/"+uuid,
-    'A check of the transaction to make sure we are not robbed',
-    'Occasion',
-    process.env.MPESA_INITIATOR_001500,
-    "TransactionStatusQuery"
-  );
-
-  transaction.merchant_request_i_d = confirmationRequest.data.OriginatorConversationID;
-  transaction.transaction_uuid = uuid;
-  transaction.save();
-  console.log(confirmationRequest.data);
-
-  //console.log(transaction)
-  res.json({
-    "ResultCode": 0,
-    "ResultDesc" : "success"
-  })
 }
 
 const c2bConfirmation = async(req, res) => {
