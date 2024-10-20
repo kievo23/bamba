@@ -43,8 +43,7 @@ const stkPush = async(req, res, next) => {
   }
 }
 
-const stkPushStatus = async(req, res) => {
-  log(req.body);
+const stkPushStatus = async(req, res) => {  
   const mpesa = await MpesaPurchase.findOne({ 
     attributes: ['merchant_request_i_d','status','airtime_status'],
     where: { 
@@ -55,6 +54,7 @@ const stkPushStatus = async(req, res) => {
 
 const stkReturn = async(req, res) => {
   log(req.body)
+  console.log(req.body);
   const mpesa = await MpesaPurchase.findOne({ where: { 
     merchant_request_i_d: req.body.Body.stkCallback.MerchantRequestID,
     airtime_status: 0,
@@ -112,6 +112,7 @@ const c2breturn = async (req, res) => {
   //   "FirstName": "KELVIN"
   // }
   log(req.body)
+  console.log(req.body);
   let BillRefNumber = req.body.BillRefNumber.replace(/\s+/g, '').slice(-9);
   let transaction = await MpesaPurchase.create({ 
     transaction_type : "PAYBILL",
