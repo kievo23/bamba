@@ -76,12 +76,12 @@ const stkReturn = async(req, res) => {
       c2bMpesa.transaction_amount = mpesa.transaction_amount;
       c2bMpesa.transaction_uuid = mpesa.transaction_uuid;
       mpesa.merchant_request_i_d = "Overtaken By C2B";
-      mpesa.status = 2;
+      mpesa.status = 3;
       mpesa.mpesa_payload = JSON.stringify(req.body);
       mpesa.save();
       //Re-assign
       mpesa = c2bMpesa;
-      mpesa.transaction_type = "STK_PUSH Highjacked by C2B";
+      mpesa.transaction_type = "STK_PUSH by C2B";
     }else{
       mpesa.transaction_type = "STK_PUSH";
       mpesa.mpesa_payload = JSON.stringify(req.body);
@@ -219,7 +219,9 @@ const c2bConfirmation = async(req, res) => {
       transaction_uuid : req.params.uuid,
       transaction_reference : req.body.Result.ResultParameters.ResultParameter[12].Value
     } });
-    //console.log(mpesa)
+    console.log("-----------------------MPESA-------------------------------")
+    console.log(mpesa)
+    console.log("-----------------------MPESA-------------------------------")
     if(mpesa){
       //SEND AIRTIME
       let feedback = await SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
