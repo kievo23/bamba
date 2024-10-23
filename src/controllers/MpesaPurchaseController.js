@@ -245,19 +245,47 @@ const c2bConfirmation = async(req, res) => {
   
 }
 
-const b2bRequest = async(req,res) => {
+const b2bRequest4107028 = async(req,res) => {
   let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
   let partyA = "4107028";
   let partyB = "525900";
   const b2bReq = await b2b4107028(
     partyA,
     partyB,
-    "500",
+    "1000",
     process.env.MPESA_B2BTIMEOUT_URL,
     process.env.MPESA_B2BCONFIRMATION_RETURN_URL+"/uuid",
     "4",
     "4",
     process.env.MPESA_INITIATOR_4107028,
+    "BusinessPayBill",
+    "bambaCredo.api",
+    "B2B Request"
+  )
+  console.log(b2bReq.data)
+  const b2b = await B2bTransfer.create({
+    conversational_id : b2bReq.data.OriginatorConversationID,
+    uuid : uuid,
+    party_a : partyA,
+    party_b : partyB
+  });
+  //console.log(b2b)
+  res.json({status: 0, msg: "success"})
+}
+
+const b2bRequest001500 = async(req,res) => {
+  let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
+  let partyA = "001500";
+  let partyB = "525900";
+  const b2bReq = await b2b4107028(
+    partyA,
+    partyB,
+    "1000",
+    process.env.MPESA_B2BTIMEOUT_URL,
+    process.env.MPESA_B2BCONFIRMATION_RETURN_URL+"/uuid",
+    "4",
+    "4",
+    process.env.MPESA_INITIATOR_001500,
     "BusinessPayBill",
     "bambaCredo.api",
     "B2B Request"
@@ -330,6 +358,7 @@ export {
     registerUrl001500,
     stkPushStatus,
     c2bConfirmation,
-    b2bRequest,
+    b2bRequest4107028,
+    b2bRequest001500,
     b2bReturn
 }
