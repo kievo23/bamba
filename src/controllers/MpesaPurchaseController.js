@@ -302,7 +302,7 @@ const b2bRequest001500 = async(req,res) => {
 }
 
 const b2bReturn = async(req,res) => {
-  console.log(req.body)
+  console.log(JSON.stringify(req.body))
   log(req.body)
   if(req.body.Result.ResultCode == "0"){
     const b2btransfer = await B2bTransfer.findOne({ where: { 
