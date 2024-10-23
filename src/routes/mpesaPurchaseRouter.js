@@ -16,8 +16,8 @@ router.route('/c2btimeout').post((req, res)=> {
 })
 
 //B2B TEST
-router.route('/b2bRequest4107028').post(MpesaPurchaseContoller.b2bRequest4107028)
-router.route('/b2bRequest001500').post(MpesaPurchaseContoller.b2bRequest001500)
+router.route('/b2bRequest4107028').get(MpesaPurchaseContoller.b2bRequest4107028)
+router.route('/b2bRequest001500').get(MpesaPurchaseContoller.b2bRequest001500)
 router.route('/b2bConfirmation/:uuid').post(MpesaPurchaseContoller.b2bReturn)
 
 export default router
