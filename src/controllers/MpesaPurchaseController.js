@@ -302,6 +302,7 @@ const b2bRequest001500 = async(req,res) => {
 }
 
 const b2bReturn = async(req,res) => {
+  console.log(req.body)
   log(req.body)
   const b2btransfer = await B2bTransfer.findOne({ where: { 
     conversational_id : req.body.Result.OriginatorConversationID,
