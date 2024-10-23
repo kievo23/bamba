@@ -304,17 +304,22 @@ const b2bRequest001500 = async(req,res) => {
 const b2bReturn = async(req,res) => {
   console.log(req.body)
   log(req.body)
-  const b2btransfer = await B2bTransfer.findOne({ where: { 
-    conversational_id : req.body.Result.OriginatorConversationID,
-    uuid : req.params.uuid
-  }});
-  //console.log(b2btransfer)
-  if(b2btransfer){
-    b2btransfer.transaction_reference = req.body.Result.TransactionID;
-    b2btransfer.amount = req.body.Result.ResultParameters.ResultParameter[1].Value;
-    b2btransfer.save();
+  if(req.body.Result.ResultCode == "0"){
+    const b2btransfer = await B2bTransfer.findOne({ where: { 
+      conversational_id : req.body.Result.OriginatorConversationID,
+      uuid : req.params.uuid
+    }});
+    //console.log(b2btransfer)
+    if(b2btransfer){
+      b2btransfer.transaction_reference = req.body.Result.TransactionID;
+      b2btransfer.amount = req.body.Result.ResultParameters.ResultParameter[1].Value;
+      b2btransfer.save();
+    }
+    res.json({status: 0, msg: "success"})
+  }else{
+    res.json({status: 1, msg: "error occurred"})
   }
-  res.json({status: 0, msg: "success"})
+  
 }
 
 const SendAirtime = async(phone,amount,mpesa) => {
