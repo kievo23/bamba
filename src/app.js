@@ -41,7 +41,7 @@ app.use(cors());
 // });
 
 app.get("/", (req, res, next) => {
-  res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa. /sendcredit, /apikey, /to");
+  res.json("Welcome to bamba backend. We are empowering Airtel users to access credit via Mpesa. /sendcredit, /apikey, /api/b2bRequest4107028, /api/b2bRequest001500");
 })
 
 app.use('/api', mpesaPurchaseRouter);
