@@ -252,7 +252,7 @@ const b2bRequest4107028 = async(req,res) => {
   const b2bReq = await b2b4107028(
     partyA,
     partyB,
-    "1000",
+    req.params.amount,
     process.env.MPESA_B2BTIMEOUT_URL,
     process.env.MPESA_B2BCONFIRMATION_RETURN_URL+"/"+uuid,
     "4",
@@ -277,10 +277,10 @@ const b2bRequest001500 = async(req,res) => {
   let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
   let partyA = "001500";
   let partyB = "525900";
-  const b2bReq = await b2b4107028(
+  const b2bReq = await b2b001500(
     partyA,
     partyB,
-    "1000",
+    req.params.amount,
     process.env.MPESA_B2BTIMEOUT_URL,
     process.env.MPESA_B2BCONFIRMATION_RETURN_URL+"/"+uuid,
     "4",

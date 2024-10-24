@@ -20,7 +20,7 @@ import request from './request.js'
  */
 const b2b = async function (senderParty, receiverParty, amount, queueUrl, resultUrl, senderType = 4, receiverType = 4, initiator = null, commandId = 'BusinessToBusinessTransfer', accountRef = null, remarks = 'B2B Request') {
     const req = await request()
-    const securityCredential = process.env.MPESA_SECURITY_CREDENTIAL_001500
+    const securityCredential = process.env.MPESA_SECURITY_CREDENTIAL_4107028
     return req.post('/mpesa/b2b/v1/paymentrequest', {
       'Initiator': initiator || this.configs.initiatorName,
       'SecurityCredential': securityCredential,
