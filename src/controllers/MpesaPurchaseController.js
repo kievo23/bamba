@@ -94,23 +94,6 @@ const stkReturn = async(req, res) => {
     mpesa.status = 1;
     mpesa.save();
 
-    //UPDATE USER
-    let user = await Customer.findOne({
-      where: {
-        phone_no : mpesa.phone_no,
-      }
-    });
-  
-    if(user){
-      user.recount_after_offer = user.recount_after_offer + 1;
-      user.purchase_count = user.purchase_count + 1
-      user.save()
-    }else{
-      let rst = await Customer.create({
-        phone_no: mpesa.phone_no
-      });
-    }
-
     //SEND AIRTIME
     SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
   }
@@ -149,22 +132,6 @@ const c2breturn = async (req, res) => {
       purchasing_phone : req.body.MSISDN,
       mpesa_payload : JSON.stringify(req.body)
     });
-  
-    let user = await Customer.findOne({
-      where: {
-        phone_no : req.body.MSISDN,
-      }
-    });
-  
-    if(user){
-      user.recount_after_offer = user.recount_after_offer + 1;
-      user.purchase_count = user.purchase_count + 1
-      user.save()
-    }else{
-      let rst = await Customer.create({
-        phone_no: req.body.MSISDN
-      });
-    }
   
     //REQUEST CONFIRMATION
     let uuid = generateApiKey({method: 'string', length: 25, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
@@ -328,6 +295,34 @@ const b2bReturn = async(req,res) => {
 
 const SendAirtime = async(phone,amount,mpesa) => {
   amount = Math.floor(amount);
+
+  let user = await Customer.findOne({
+    where: {
+      phone_no : phone,
+    }
+  });
+
+  if(user){
+    user.recount_after_offer = user.recount_after_offer + 1;
+    user.purchase_count = user.purchase_count + 1
+    user.save()
+  }else{
+    //Discounts for newcomers
+    if(amount >= 10 && amount <= 20){
+      amount += 10;
+    }else if(amount > 20 && amount <= 40){
+      amount += 15;
+    }else if(amount > 40 && amount <= 65){
+      amount += 20;
+    }else if(amount > 65 && amount <= 100){
+      amount += 25;
+    }
+    //End of discounts for new comers
+    let rst = await Customer.create({
+      phone_no: phone
+    });
+  }
+
   let result = await sendAirtime(phone,amount);
   log(result.data)
   if(result.data.errorMessage === "None"){
