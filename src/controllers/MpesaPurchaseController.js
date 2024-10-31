@@ -225,6 +225,10 @@ const c2bConfirmation = async(req, res) => {
     if(mpesa){
       //SEND AIRTIME
       let feedback = await SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
+      console.log("-----------------------AfricasTalking feedback-------------------------------")
+      console.log(feedback)
+      console.log("-----------------------AfricasTalking feedback-------------------------------")
+      console.log(feedback.data)
       res.json({
         "ResultCode": 0,
         "ResultDesc" : "Transaction Authenticated",
