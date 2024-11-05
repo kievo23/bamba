@@ -294,6 +294,14 @@ const b2bReturn = async(req,res) => {
 }
 
 const SendAirtime = async(phone,amount,mpesa) => {
+
+  const AIRTEL_AND_TELKOM_PREFIXES = [
+    '10', '730', '731', '732', '733', '734', '735', '736', '737', '738', '739',
+    '750', '751', '752', '753', '754', '755', '756', '762',
+    '780', '781', '782', '783', '784', '785', '786', '787', '788', '789',
+    '770', '771', '772', '773', '774', '775', '776', '777', '778', '779'
+  ];
+
   amount = Math.floor(amount);
 
   let user = await Customer.findOne({
@@ -308,14 +316,19 @@ const SendAirtime = async(phone,amount,mpesa) => {
     user.save()
   }else{
     //Discounts for newcomers
-    if(amount >= 10 && amount <= 20){
-      amount += 10;
-    }else if(amount > 20 && amount <= 40){
-      amount += 15;
-    }else if(amount > 40 && amount <= 65){
-      amount += 20;
-    }else if(amount > 65 && amount <= 100){
-      amount += 25;
+    const prefix = phone.substring(3);
+    for (const airtelPrefix of AIRTEL_AND_TELKOM_PREFIXES) {
+      if (prefix.startsWith(airtelPrefix)) {
+        if(amount >= 10 && amount <= 20){
+          amount += 10;
+        }else if(amount > 20 && amount <= 40){
+          amount += 15;
+        }else if(amount > 40 && amount <= 65){
+          amount += 20;
+        }else if(amount > 65 && amount <= 100){
+          amount += 25;
+        }
+      }
     }
     //End of discounts for new comers
     let rst = await Customer.create({
