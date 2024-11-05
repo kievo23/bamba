@@ -315,7 +315,7 @@ const SendAirtime = async(phone,amount,mpesa) => {
     user.purchase_count = user.purchase_count + 1
     user.save()
   }else{
-    //Discounts for newcomers
+    //Discounts for newcomers who are airtel or telcom users
     const prefix = phone.substring(3);
     for (const airtelPrefix of AIRTEL_AND_TELKOM_PREFIXES) {
       if (prefix.startsWith(airtelPrefix)) {
