@@ -47,6 +47,7 @@
    $(document).ready(function() {
     $('#purchases-table').DataTable();
     $('#filter-btn').click(function(){
+      $('table tbody').html('')
       $.ajax({
         url: "/api/data",
         type: 'GET',
