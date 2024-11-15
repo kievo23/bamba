@@ -45,8 +45,9 @@
 
  <script>
    $(document).ready(function() {
-    const data = []
-    $.ajax({
+    $('#purchases-table').DataTable();
+    $('#filter-btn').click(function(){
+      $.ajax({
         url: "/api/data",
         type: 'GET',
         data: {
@@ -70,7 +71,8 @@
                 </tr>")
             });
         }
-    });
+      });
+    })
    });
  </script>
 </body>
