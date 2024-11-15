@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Mpesa Purchases</title>
+ <script src="https://cdn.tailwindcss.com"></script>
+ <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+ <h1 class="text-2xl font-bold mb-4">Mpesa Purchases</h1>
+
+ <div class="flex items-center justify-between mb-4">
+   <div class="flex items-center space-x-2">
+     <label for="start-date" class="font-medium">Start Date:</label>
+     <input type="date" id="start-date" class="px-3 py-2 border rounded-md">
+   </div>
+   <div class="flex items-center space-x-2">
+     <label for="end-date" class="font-medium">End Date:</label>
+     <input type="date" id="end-date" class="px-3 py-2 border rounded-md">
+   </div>
+   <button id="filter-btn" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Filter</button>
+ </div>
+
+ <table id="purchases-table" class="w-full border-collapse">
+   <thead>
+     <tr class="bg-gray-200">
+      <th class="px-4 py-2 text-left">Id</th>
+       <th class="px-4 py-2 text-left">Phone No.</th>
+       <th class="px-4 py-2 text-left">Transaction Amount</th>
+       <th class="px-4 py-2 text-left">Transaction Time</th>
+       <th class="px-4 py-2 text-left">Transaction Type</th>
+       <th class="px-4 py-2 text-left">Transaction Reference</th>
+       <th class="px-4 py-2 text-left">Short Code</th>
+       <th class="px-4 py-2 text-left">Status</th>
+       <th class="px-4 py-2 text-left">Airtime</th>
+       <th class="px-4 py-2 text-left">Created At</th>
+     </tr>
+   </thead>
+   <tbody></tbody>
+ </table>
+
+ <script>
+   $(document).ready(function() {
+    const data = []
+    $.ajax({
+        url: "/api/data",
+        type: 'GET',
+        data: {
+          'startDate' : $('#start-date').val(),
+          'endDate' : $('#end-date').val()
+        },
+        success: function(res) {
+            console.log(res);
+            res.forEach(element => {
+              $('table tbody').append("<tr>\
+                <td>"+element.id+"</td>\
+                <td>"+element.phone_no+"</td>\
+                <td>"+element.transaction_amount+"</td>\
+                <td>"+element.transaction_time+"</td>\
+                <td>"+element.transaction_type+"</td>\
+                <td>"+element.transaction_reference+"</td>\
+                <td>"+element.business_short_code+"</td>\
+                <td>"+element.status+"</td>\
+                <td>"+element.airtime_status+"</td>\
+                <td>"+element.created_at+"</td>\
+                </tr>")
+            });
+        }
+    });
+   });
+ </script>
+</body>
+</html>

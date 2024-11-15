@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import * as MpesaPurchaseContoller from "../controllers/MpesaPurchaseController.js";
+import * as DataContoller from "../controllers/DataController.js";
 import apiKey from '../middlewares/apikey.js'
 
 
@@ -19,5 +20,9 @@ router.route('/c2btimeout').post((req, res)=> {
 router.route('/b2bRequest4107028/:amount').get(MpesaPurchaseContoller.b2bRequest4107028)
 router.route('/b2bRequest001500/:amount').get(MpesaPurchaseContoller.b2bRequest001500)
 router.route('/b2bConfirmation/:uuid').post(MpesaPurchaseContoller.b2bReturn)
+
+//DATA API
+router.route('/data').get(DataContoller.fetchData)
+router.route('/records').get(DataContoller.dashboard)
 
 export default router

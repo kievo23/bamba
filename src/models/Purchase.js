@@ -88,6 +88,12 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
         allowNull: true,
     },
     createdAt: { type: Sequelize.DATE, field: 'created_at' },
+    created: {
+        type: Sequelize.VIRTUAL,
+        get() {
+            return `${this.created_at}`;
+        }
+    },
     updatedAt: { type: Sequelize.DATE, field: 'updated_at' }
   },{
     indexes: [
@@ -99,7 +105,7 @@ const MpesaPurchase = connection.define('mpesa_purchase',{
         { fields: ['transaction_uuid', 'merchant_request_i_d'] }
       ],
     timestamps: true, // timestamps will now be true
-    underscored: true
+    underscored: true,
   }
 );
 
