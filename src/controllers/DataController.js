@@ -25,7 +25,7 @@ const fetchData = async(req, res) => {
 
     const purchases = await MpesaPurchase.findAll({
       where,
-      attributes: ['id','phone_no','transaction_amount','transaction_time','transaction_type','transaction_reference','business_short_code','status','airtime_status','created_at'],
+      attributes: ['id','phone_no','transaction_amount','airtime_amount','transaction_time','transaction_type','transaction_reference','business_short_code','status','airtime_status','created_at'],
     });
     //console.log(purchases)
     res.json(purchases);
