@@ -45,7 +45,10 @@
 
  <script>
    $(document).ready(function() {
-    $('#purchases-table').DataTable();
+    $('#purchases-table').DataTable({
+      order: [[0, 'desc']],
+      responsive: true
+    });
     $('#filter-btn').click(function(){
       $('table tbody').html('')
       $.ajax({
