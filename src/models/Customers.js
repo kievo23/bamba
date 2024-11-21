@@ -26,6 +26,16 @@ const Customer = connection.define('customers',{
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
+    },
+    cumulative_amount_after_offer: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: 0
+    },
+    cumulative_amount_total: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: 0
     },    
     createdAt: { type: Sequelize.DATE, field: 'created_at' },
     updatedAt: { type: Sequelize.DATE, field: 'updated_at' }

@@ -187,15 +187,14 @@ const c2bConfirmation = async(req, res) => {
       transaction_reference : req.body.Result.ResultParameters.ResultParameter[12].Value
     } });
     console.log("-----------------------MPESA-------------------------------")
-    console.log(mpesa)
+    //console.log(mpesa)
     console.log("-----------------------MPESA-------------------------------")
     if(mpesa){
       //SEND AIRTIME
       let feedback = await SendAirtime(mpesa.phone_no,mpesa.transaction_amount,mpesa);
       console.log("-----------------------AfricasTalking feedback-------------------------------")
-      console.log(feedback)
-      console.log("-----------------------AfricasTalking feedback-------------------------------")
       console.log(feedback.data)
+      console.log("-----------------------AfricasTalking feedback-------------------------------")
       res.json({
         "ResultCode": 0,
         "ResultDesc" : "Transaction Authenticated",
@@ -312,7 +311,9 @@ const SendAirtime = async(phone,amount,mpesa) => {
 
   if(user){
     user.recount_after_offer = user.recount_after_offer + 1;
-    user.purchase_count = user.purchase_count + 1
+    user.purchase_count = user.purchase_count + 1;
+    user.cumulative_amount_after_offer += amount;
+    user.cumulative_amount_total += amount;
     user.save()
   }else{
     //Discounts for newcomers who are airtel or telcom users
