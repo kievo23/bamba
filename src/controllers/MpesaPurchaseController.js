@@ -318,6 +318,12 @@ const SendAirtime = async(phone,amount,mpesa) => {
   }else{
     //Discounts for newcomers who are airtel or telcom users
     const prefix = phone.substring(3);
+    //End of discounts for new comers
+    let rst = await Customer.create({
+      phone_no: phone,
+      cumulative_amount_total: amount
+    });
+
     for (const airtelPrefix of AIRTEL_AND_TELKOM_PREFIXES) {
       if (prefix.startsWith(airtelPrefix)) {
         if(amount >= 10 && amount <= 20){
@@ -331,10 +337,6 @@ const SendAirtime = async(phone,amount,mpesa) => {
         }
       }
     }
-    //End of discounts for new comers
-    let rst = await Customer.create({
-      phone_no: phone
-    });
   }
 
   let result = await sendAirtime(phone,amount);

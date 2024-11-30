@@ -28,12 +28,12 @@ const Customer = connection.define('customers',{
         defaultValue: 0
     },
     cumulative_amount_after_offer: {
-        type: Sequelize.STRING,
+        type: Sequelize.FLOAT,
         allowNull: true,
         defaultValue: 0
     },
     cumulative_amount_total: {
-        type: Sequelize.STRING,
+        type: Sequelize.FLOAT,
         allowNull: true,
         defaultValue: 0
     },    
