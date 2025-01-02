@@ -332,7 +332,7 @@ const SendAirtime = async(phone,amount,mpesa) => {
           amount += 15;
         }else if(amount > 40 && amount <= 65){
           amount += 20;
-        }else if(amount > 65 && amount <= 100){
+        }else if(amount > 65){
           amount += 25;
         }
       }

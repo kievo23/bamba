@@ -9,8 +9,8 @@ import {AfricastalkingModel} from '../models/Africastalking.js'
 import lipanampesa from '../mpesa4107028/lipa_na_mpesa_online.js'
 import getAccessToken from '../mpesa4107028/oauth.js'
 
-router.get("/sendcredit", async (req, res) => {
-  let result = await sendAirtime("+254710345130","5");
+router.post("/sendcredit", async (req, res) => {
+  let result = await sendAirtime(req.body.phone,req.body.amount);
   console.log(result.data)
   res.json(JSON.stringify(result.data));
 });
