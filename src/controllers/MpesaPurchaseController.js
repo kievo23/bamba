@@ -340,7 +340,7 @@ const SendAirtime = async(phone,amount,mpesa) => {
   }
 
   let result = await sendAirtime(phone,amount);
-  log(result.data)
+  console.log(JSON.stringify(result.data))
   if(result.data.errorMessage === "None"){
     mpesa.airtime_amount = result.data.responses[0].amount,
     mpesa.airtime_discount = result.data.responses[0].discount,
